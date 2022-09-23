@@ -53,7 +53,13 @@ const Authors = () => {
       <p>
         <label>
           name
-          <input onChange={(e) => setName(e.target.value)} />
+          <select onChange={(e) => setName(e.target.value)}>
+            {result.data.allAuthors.map((author) => (
+              <option key={author.name} value={author.name}>
+                {author.name}
+              </option>
+            ))}
+          </select>
         </label>
       </p>
       <p>
