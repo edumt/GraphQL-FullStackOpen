@@ -18,7 +18,8 @@ const App = () => {
 
       {page === "books" && <Books />}
 
-      <NewBook show={page === "add"} />
+      {page === "add" && <NewBook />}
+      
     </div>
   );
 };
