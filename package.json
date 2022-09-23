@@ -1,0 +1,21 @@
+{
+  "name": "asdf",
+  "version": "1.0.0",
+  "description": "",
+  "main": "library-backend.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "node library-backend.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/edumt/GraphQL-FullStackOpen.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/edumt/GraphQL-FullStackOpen/issues"
+  },
+  "homepage": "https://github.com/edumt/GraphQL-FullStackOpen#readme"
+}
