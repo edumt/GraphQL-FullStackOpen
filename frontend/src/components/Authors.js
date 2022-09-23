@@ -1,12 +1,34 @@
-import { useQuery } from "@apollo/client";
-import { ALL_AUTHORS } from "../GraphQL/queries";
+import { useMutation, useQuery } from "@apollo/client";
+import { ALL_AUTHORS, EDIT_AUTHOR } from "../GraphQL/queries";
+import { useState } from "react";
 
 const Authors = () => {
+  const [name, setName] = useState("");
+  const [born, setBorn] = useState("");
+
   const result = useQuery(ALL_AUTHORS);
+
+  const [editAuthor] = useMutation(EDIT_AUTHOR, {
+    refetchQueries: [{ query: ALL_AUTHORS }],
+  });
 
   if (result.loading) {
     return <div>loading authors...</div>;
   }
+
+  const handleClick = () => {
+    if (!name || !born) return;
+
+    editAuthor({
+      variables: {
+        name,
+        born,
+      },
+    });
+
+    setName("");
+    setBorn("");
+  };
 
   return (
     <div>
@@ -27,6 +49,20 @@ const Authors = () => {
           ))}
         </tbody>
       </table>
+      <h3>Set birthyear</h3>
+      <p>
+        <label>
+          name
+          <input onChange={(e) => setName(e.target.value)} />
+        </label>
+      </p>
+      <p>
+        <label>
+          born
+          <input type="number" onChange={(e) => setBorn(+e.target.value)} />
+        </label>
+      </p>
+      <button onClick={handleClick}>update author</button>
     </div>
   );
 };
