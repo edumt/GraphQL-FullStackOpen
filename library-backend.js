@@ -123,6 +123,7 @@ const typeDefs = gql`
       published: Int!
       genres: [String!]!
     ): Book
+    editAuthor(name: String!, setBornTo: Int!): Author
   }
 `;
 
@@ -152,7 +153,7 @@ const resolvers = {
     addBook: (root, args) => {
       const { title, author, published, genres } = args;
 
-      if (!authors.some(savedAuthor => savedAuthor.name === author)) {
+      if (!authors.some((savedAuthor) => savedAuthor.name === author)) {
         authors.push({ name: author, id: randomUUID() });
       }
 
@@ -160,6 +161,15 @@ const resolvers = {
       books.push(book);
 
       return book;
+    },
+    editAuthor: (root, args) => {
+      const { name, setBornTo } = args;
+      const author = authors.find((author) => author.name === name);
+
+      if (!author) return null;
+
+      author.born = setBornTo;
+      return author;
     },
   },
 };
