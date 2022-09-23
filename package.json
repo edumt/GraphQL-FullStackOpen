@@ -17,5 +17,8 @@
   "bugs": {
     "url": "https://github.com/edumt/GraphQL-FullStackOpen/issues"
   },
-  "homepage": "https://github.com/edumt/GraphQL-FullStackOpen#readme"
+  "homepage": "https://github.com/edumt/GraphQL-FullStackOpen#readme",
+  "dependencies": {
+    "apollo-server": "^3.10.2"
+  }
 }
