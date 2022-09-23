@@ -1,4 +1,5 @@
 const { ApolloServer, gql } = require("apollo-server");
+const { randomUUID } = require("crypto");
 
 let authors = [
   {
@@ -98,7 +99,7 @@ const typeDefs = gql`
     published: Int!
     author: String!
     id: ID!
-    genres: [String!]
+    genres: [String!]!
   }
 
   type Author {
@@ -114,6 +115,15 @@ const typeDefs = gql`
     allBooks(author: String, genre: String): [Book]!
     allAuthors: [Author]!
   }
+
+  type Mutation {
+    addBook(
+      title: String!
+      author: String!
+      published: Int!
+      genres: [String!]!
+    ): Book
+  }
 `;
 
 const resolvers = {
@@ -123,16 +133,34 @@ const resolvers = {
     allBooks: (root, args) => {
       const { author, genre } = args;
 
-      let filteredBooks = author ? books.filter((book) => book.author === author) : books;
-      filteredBooks = genre ? filteredBooks.filter((book) => book.genres.includes(genre)) : filteredBooks;
+      let filteredBooks = author
+        ? books.filter((book) => book.author === author)
+        : books;
+      filteredBooks = genre
+        ? filteredBooks.filter((book) => book.genres.includes(genre))
+        : filteredBooks;
 
-      return filteredBooks
+      return filteredBooks;
     },
     allAuthors: () => authors,
   },
   Author: {
     bookCount: (root) =>
       books.filter((book) => book.author === root.name).length,
+  },
+  Mutation: {
+    addBook: (root, args) => {
+      const { title, author, published, genres } = args;
+
+      if (!authors.some(savedAuthor => savedAuthor.name === author)) {
+        authors.push({ name: author, id: randomUUID() });
+      }
+
+      const book = { title, published, author, genres };
+      books.push(book);
+
+      return book;
+    },
   },
 };
 
