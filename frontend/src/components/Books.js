@@ -2,15 +2,15 @@ import { useQuery } from "@apollo/client";
 import { ALL_BOOKS } from "../GraphQL/queries";
 
 const Books = () => {
-  const books = useQuery(ALL_BOOKS);
+  const result = useQuery(ALL_BOOKS);
 
-  if (books.loading) {
+  if (result.loading) {
     return <div>loading books...</div>;
   }
 
   return (
     <div>
-      <h2>books</h2>
+      <h2>result</h2>
 
       <table>
         <tbody>
@@ -19,7 +19,7 @@ const Books = () => {
             <th>author</th>
             <th>published</th>
           </tr>
-          {books.data.allBooks.map((a) => (
+          {result.data.allBooks.map((a) => (
             <tr key={a.title}>
               <td>{a.title}</td>
               <td>{a.author}</td>
