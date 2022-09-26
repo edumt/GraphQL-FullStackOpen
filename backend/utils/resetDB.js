@@ -92,6 +92,7 @@ const reset = async () => {
     await saveBook(book);
   }
   console.log("DB reset!");
+  mongoose.connection.close();
 };
 
 mongoose
@@ -102,5 +103,4 @@ mongoose
   })
   .catch((error) => {
     console.log("error connection to MongoDB:", error.message);
-  })
- 
+  });
