@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "nodemon index.js"
+    "dev": "nodemon index.js",
+    "db:reset": "node ./utils/resetDB.js"
   },
   "repository": {
     "type": "git",
@@ -20,7 +21,9 @@
   "homepage": "https://github.com/edumt/GraphQL-FullStackOpen#readme",
   "dependencies": {
     "apollo-server": "^3.10.2",
-    "graphql": "^16.6.0"
+    "dotenv": "^16.0.2",
+    "graphql": "^16.6.0",
+    "mongoose": "^6.6.1"
   },
   "devDependencies": {
     "nodemon": "^2.0.20"
