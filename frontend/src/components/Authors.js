@@ -1,12 +1,17 @@
 import { useMutation, useQuery } from "@apollo/client";
-import { ALL_AUTHORS, EDIT_AUTHOR } from "../GraphQL/queries";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
-const Authors = () => {
+import { ALL_AUTHORS, EDIT_AUTHOR } from "../GraphQL/queries";
+
+const Authors = ({ loggedIn }) => {
   const [name, setName] = useState("");
   const [born, setBorn] = useState("");
 
   const result = useQuery(ALL_AUTHORS);
+
+  useEffect(() => {
+    setName(result.data?.allAuthors[0].name);
+  }, [result.data]);
 
   const [editAuthor] = useMutation(EDIT_AUTHOR, {
     refetchQueries: [{ query: ALL_AUTHORS }],
@@ -29,10 +34,10 @@ const Authors = () => {
     setName("");
     setBorn("");
   };
-
+  
   return (
     <div>
-      <h2>authors</h2>
+      <h2>Authors</h2>
       <table>
         <tbody>
           <tr>
@@ -49,26 +54,30 @@ const Authors = () => {
           ))}
         </tbody>
       </table>
-      <h3>Set birthyear</h3>
-      <p>
-        <label>
-          name
-          <select onChange={(e) => setName(e.target.value)}>
-            {result.data.allAuthors.map((author) => (
-              <option key={author.name} value={author.name}>
-                {author.name}
-              </option>
-            ))}
-          </select>
-        </label>
-      </p>
-      <p>
-        <label>
-          born
-          <input type="number" onChange={(e) => setBorn(+e.target.value)} />
-        </label>
-      </p>
-      <button onClick={handleClick}>update author</button>
+      {loggedIn && (
+        <>
+          <h3>Set birthyear</h3>
+          <p>
+            <label>
+              name
+              <select onChange={(e) => setName(e.target.value)}>
+                {result.data.allAuthors.map((author) => (
+                  <option key={author.name} value={author.name}>
+                    {author.name}
+                  </option>
+                ))}
+              </select>
+            </label>
+          </p>
+          <p>
+            <label>
+              born
+              <input type="number" onChange={(e) => setBorn(+e.target.value)} />
+            </label>
+          </p>
+          <button onClick={handleClick}>update author</button>
+        </>
+      )}
     </div>
   );
 };
