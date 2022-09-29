@@ -1,21 +1,24 @@
-import { useApolloClient } from "@apollo/client";
+import { useApolloClient, useQuery } from "@apollo/client";
 import { useState } from "react";
 
 import Authors from "./components/Authors";
 import Books from "./components/Books";
 import LoginForm from "./components/LoginForm";
 import NewBook from "./components/NewBook";
+import Recommendations from "./components/Recommendations";
+import { ME } from "./GraphQL/queries";
 
 const App = () => {
   const [token, setToken] = useState(null);
   const [page, setPage] = useState("authors");
+  const me = useQuery(ME);
   const client = useApolloClient();
 
   const logout = () => {
     setToken(null);
     localStorage.clear();
     client.resetStore();
-    setPage('login')
+    setPage("login");
   };
 
   return (
@@ -26,6 +29,9 @@ const App = () => {
         {token ? (
           <>
             <button onClick={() => setPage("add")}>add book</button>
+            <button onClick={() => setPage("recommendations")}>
+              recommend
+            </button>
             <button onClick={logout}>logout</button>
           </>
         ) : (
@@ -47,6 +53,7 @@ const App = () => {
           }}
         />
       )}
+      {page === "recommendations" && <Recommendations user={me?.data.me} />}
     </div>
   );
 };
