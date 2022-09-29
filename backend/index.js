@@ -53,6 +53,7 @@ const typeDefs = gql`
     bookCount: Int!
     authorCount: Int!
     allBooks(author: String, genre: String): [Book]!
+    allGenres: [String!]!
     allAuthors: [Author]!
     me: User
   }
@@ -84,6 +85,7 @@ const resolvers = {
 
       return books;
     },
+    allGenres: async () => Book.distinct("genres"),
     allAuthors: async () => Author.find({}),
     me: async (root, args, context) => context.currentUser,
   },
